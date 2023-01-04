@@ -30,8 +30,12 @@ public class AppController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@RequestBody User user){
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.ok().body(user);
+        try{
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.ok().body(savedUser);
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/read/{id}")
