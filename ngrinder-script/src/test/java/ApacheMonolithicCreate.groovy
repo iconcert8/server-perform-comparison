@@ -33,11 +33,7 @@ class ApacheMonolithicCreate {
     @Test
     void test() {
         HTTPResponse response = request.POST("http://127.0.0.1:8001/create", [username: "Kim", password: "password1234"])
-        if (response.statusCode != 200) {
-            grinder.logger.warn("Warning. The response may not be correct. The response code was {}.", response.statusCode)
-        } else {
-            MatcherAssert.assertThat(response.statusCode, is(200))
-        }
+        MatcherAssert.assertThat(response.statusCode, is(200))
     }
 }
 
