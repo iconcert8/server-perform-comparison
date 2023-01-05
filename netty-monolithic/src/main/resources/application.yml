@@ -2,14 +2,3 @@
 server:
   port: 8002
   servlet.encoding.charset: UTF-8
-
-spring:
-  data.r2dbc.repositories.enabled: true
-  r2dbc:
-    url: r2dbc:h2:file://./data/test #r2dbc:h2:mem://./test
-    username: admin
-    password: 1234
-#  jpa: 안되나?
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
