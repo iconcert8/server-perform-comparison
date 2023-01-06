@@ -13,14 +13,14 @@ import static net.grinder.script.Grinder.grinder
 import static org.hamcrest.Matchers.is
 
 @RunWith(GrinderRunner)
-class ApacheMonolithicCreate {
+class NettyMonolithicCreate {
     public static GTest test
     public static HTTPRequest request
 
     @BeforeProcess
     static void beforeProcess() {
         HTTPRequestControl.setConnectionTimeout(300000)
-        test = new GTest(1, "apache-monolithic-create")
+        test = new GTest(1, "netty-monolithic-create")
         request = new HTTPRequest()
     }
 
@@ -32,7 +32,7 @@ class ApacheMonolithicCreate {
 
     @Test
     void test() {
-        HTTPResponse response = request.POST("http://127.0.0.1:8001/create", [username: "apache", password: "apache1234"])
+        HTTPResponse response = request.POST("http://127.0.0.1:8002/create", [username: "netty", password: "netty1234"])
         MatcherAssert.assertThat(response.statusCode, is(200))
     }
 }
