@@ -1,9 +1,6 @@
 package com.gyeom.apachemonolithic;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-@Configuration
-@EnableJpaRepositories
+//@Configuration
+//@EnableJpaRepositories
 public class JpaConfig {
 }

@@ -1,5 +1,7 @@
 package com.gyeom.apachemonolithic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,12 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
 public class AppController {
+    Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     private final UserRepository userRepository;
 
@@ -22,10 +23,7 @@ public class AppController {
 
     @GetMapping("/")
     public ResponseEntity<Object> root(){
-        Map<String, Object> map = new HashMap<>(){{
-            put("status", 200);
-        }};
-        return ResponseEntity.ok().body(map);
+        return ResponseEntity.ok().body("{status: 200}");
     }
 
     @PostMapping("/create")
@@ -34,14 +32,20 @@ public class AppController {
             User savedUser = userRepository.save(user);
             return ResponseEntity.ok().body(savedUser);
         }catch (Exception e){
+            log.error(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @GetMapping("/read/{id}")
     public ResponseEntity<Object> read(@PathVariable("id") long id){
-        Optional<User> nullableUser = userRepository.findById(id);
-        if(nullableUser.isEmpty()) return ResponseEntity.notFound().build();
-        else return ResponseEntity.ok().body(nullableUser.get());
+        try{
+            Optional<User> nullableUser = userRepository.findById(id);
+            if(nullableUser.isEmpty()) return ResponseEntity.notFound().build();
+            else return ResponseEntity.ok().body(nullableUser.get());
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
