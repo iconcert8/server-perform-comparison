@@ -1,51 +1,49 @@
 package com.gyeom.nettymonolithic;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Flux;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@RestController
+@Component
 public class AppController {
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
     private final UserRepository userRepository;
 
     public AppController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/")
-    ResponseEntity<Mono<Object>> root(){
-        Map<String, Object> map = new HashMap<>(){{
-            put("status", 200);
-        }};
-        return ResponseEntity.ok().body(Mono.just(map));
+    @Bean
+    public RouterFunction<ServerResponse> routes(){
+        return RouterFunctions
+                .route(RequestPredicates.GET("/"), this::root)
+                .andRoute(RequestPredicates.POST("/create"), this::create)
+                ;
     }
 
-    @PostMapping("/create")
-    ResponseEntity<Mono<User>> create(@RequestBody User user){
-        try{
-            Mono<User> savedUser = userRepository.save(user);
-            return ResponseEntity.ok().body(savedUser);
-        }catch (Exception e){
-            return ResponseEntity.internalServerError().build();
-        }
+    public Mono<ServerResponse> root(ServerRequest req){
+        return ServerResponse.ok().body(Mono.just("root"), String.class);
     }
 
-    @GetMapping("/list")
-    ResponseEntity<Flux<User>> list(){
-        try{
-            Flux<User> list = userRepository.findAll();
-            return ResponseEntity.ok().body(list);
-        }catch (Exception e){
-            return ResponseEntity.internalServerError().build();
-        }
+    public Mono<ServerResponse> create(ServerRequest req){
+        return req
+                .bodyToMono(User.class)
+                .flatMap(user -> {
+                    try {
+                        Mono<User> savedUser = userRepository.save(user);
+                        return ServerResponse
+                                .ok().contentType(MediaType.APPLICATION_JSON).body(savedUser, User.class);
+                    }catch (Exception e){
+                        log.error(e.getMessage());
+                        return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                    }
+                });
     }
 
 }
