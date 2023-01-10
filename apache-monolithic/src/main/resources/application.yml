@@ -32,7 +32,7 @@ spring:
       path: /h2
   datasource:
     hikari:
-      jdbcUrl: jdbc:h2:file:./data/test #jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;
+      # WRITE_DELAY: I/O 시간을 명확히 보여주기 위해 0초로 commit 시간을 설정
+      jdbcUrl: jdbc:h2:file:./data/test;WRITE_DELAY=0; #jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;
       driverClassName: org.h2.Driver
       username: sa
-#      password:

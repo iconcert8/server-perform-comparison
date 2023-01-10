@@ -30,6 +30,8 @@ public class R2dbcConfig{
         return new H2ConnectionFactory(
                 H2ConnectionConfiguration.builder()
                         .file("./data/test")
+                        // WRITE_DELAY: I/O 시간을 명확히 보여주기 위해 0초로 commit 시간을 설정
+                        .property("WRITE_DELAY", "0")
 //                        .inMemory("test")
 //                        .property(H2ConnectionOption.DB_CLOSE_DELAY, "-1")
                         .username("sa")
