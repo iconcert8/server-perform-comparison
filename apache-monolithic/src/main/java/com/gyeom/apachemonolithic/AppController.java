@@ -38,7 +38,7 @@ public class AppController {
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<Object> read(@PathVariable("id") long id){
+    public ResponseEntity<Object> read(@PathVariable("id") String id){
         try{
             Optional<User> nullableUser = userRepository.findById(id);
             if(nullableUser.isEmpty()) return ResponseEntity.notFound().build();

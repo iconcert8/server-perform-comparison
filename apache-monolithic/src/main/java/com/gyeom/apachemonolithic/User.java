@@ -1,20 +1,24 @@
 package com.gyeom.apachemonolithic;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document("users")
 //@Entity
 //@Table(name = "users")
 public class User {
 
-//    @Id
+    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
     private String username;
     private String password;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

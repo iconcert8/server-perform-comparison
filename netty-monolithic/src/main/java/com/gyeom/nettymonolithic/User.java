@@ -1,21 +1,28 @@
 package com.gyeom.nettymonolithic;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Table("users")
+//@Table("users")
+@Document("users")
 public class User {
 
     @Id
-    private long id;
+    private String id;
     private String username;
     private String password;
 
-    public long getId() {
+    public User(){}
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

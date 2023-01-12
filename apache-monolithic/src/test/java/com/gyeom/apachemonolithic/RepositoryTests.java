@@ -41,7 +41,7 @@ public class RepositoryTests {
         User savedUser = userRepository.save(user);
 
         // then
-        Assert.isTrue(savedUser.getId() > 0, "fail saved user");
+        Assert.isTrue(savedUser.getId() != null, "fail saved user");
     }
 
     @Test

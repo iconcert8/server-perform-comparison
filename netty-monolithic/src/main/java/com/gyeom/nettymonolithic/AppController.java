@@ -3,8 +3,6 @@ package com.gyeom.nettymonolithic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
@@ -32,18 +30,19 @@ public class AppController {
     }
 
     public Mono<ServerResponse> create(ServerRequest req){
-        return req
-                .bodyToMono(User.class)
-                .flatMap(user -> {
-                    try {
-                        Mono<User> savedUser = userRepository.save(user);
-                        return ServerResponse
-                                .ok().contentType(MediaType.APPLICATION_JSON).body(savedUser, User.class);
-                    }catch (Exception e){
-                        log.error(e.getMessage());
-                        return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-                    }
-                });
+        return ServerResponse.ok().body(userRepository.save(new User("netty", "1234")), User.class);
+//        return req
+//                .bodyToMono(User.class)
+//                .flatMap(user -> {
+//                    try {
+//                        Mono<User> savedUser = userRepository.save(user);
+//                        return ServerResponse
+//                                .ok().contentType(MediaType.APPLICATION_JSON).body(savedUser, User.class);
+//                    }catch (Exception e){
+//                        log.error(e.getMessage());
+//                        return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//                    }
+//                });
     }
 
 }
