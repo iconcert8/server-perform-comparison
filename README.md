@@ -1,4 +1,4 @@
-# :hammer: 진행 중
+# :hammer: 작업 중
 
 # server-perform-comparison
 Comparison Server Performance.
